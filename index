@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026학년도 수업공개의 날</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #3157d5, #5b72e8);
+      color: white;
+      text-align: center;
+      padding: 42px 20px 38px;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 16px;
+      opacity: 0.92;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 35px auto 60px;
+    }
+
+    .section-title {
+      font-size: 23px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .class-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .class-card {
+      width: 100%;
+      min-height: 82px;
+      background: white;
+      border: 1px solid #e2e5ec;
+      border-radius: 14px;
+      padding: 14px 22px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      text-align: left;
+    }
+
+    .class-card:hover {
+      transform: translateY(-3px);
+      border-color: #5570df;
+      box-shadow: 0 7px 18px rgba(49, 87, 213, 0.13);
+    }
+
+    .class-card.active {
+      border: 2px solid #3157d5;
+      background: #f1f4ff;
+    }
+
+    .class-number {
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #3157d5;
+      color: white;
+      font-weight: 700;
+      margin-right: 20px;
+    }
+
+    .class-subject {
+      width: 90px;
+      flex: 0 0 90px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .class-teacher {
+      color: #666;
+      font-size: 15px;
+      margin-left: 10px;
+    }
+
+    .detail-box {
+      display: none;
+      background: white;
+      margin-top: 25px;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .detail-box.show {
+      display: block;
+    }
+
+    .detail-title {
+      margin: 0 0 20px;
+      font-size: 24px;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .info-table th,
+    .info-table td {
+      border: 1px solid #e1e4ea;
+      padding: 13px 15px;
+      text-align: left;
+      line-height: 1.55;
+    }
+
+    .info-table th {
+      width: 120px;
+      background: #f5f7fb;
+      font-weight: 700;
+    }
+
+    .action-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .action-box {
+      border-radius: 12px;
+      padding: 17px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid #dce1ed;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    .action-box:hover {
+      background: #f1f4ff;
+      border-color: #5570df;
+      transform: translateY(-2px);
+    }
+
+    .action-box.observation {
+      background: #eef2ff;
+      border-color: #cbd4ff;
+      color: #2948bb;
+    }
+
+    .action-box.map {
+      background: #f7f8fa;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.68);
+      z-index: 1000;
+      padding: 25px;
+    }
+
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      width: min(1000px, 100%);
+      height: min(90vh, 850px);
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      border-bottom: 1px solid #ddd;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      border: none;
+      background: none;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+      color: #555;
+    }
+
+    .pdf-viewer {
+      width: 100%;
+      height: 100%;
+      border: none;
+      flex: 1;
+    }
+
+    .notice {
+      margin-top: 18px;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 800px) {
+      .action-area {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      header h1 {
+        font-size: 25px;
+      }
+
+      .container {
+        width: min(100% - 20px, 1100px);
+        margin-top: 22px;
+      }
+
+      .detail-box {
+        padding: 18px;
+      }
+
+      .info-table th {
+        width: 88px;
+      }
+
+      .info-table th,
+      .info-table td {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>2026학년도 수업공개의 날</h1>
+    <p>장당중학교 AI·디지털 교육 및 공개수업</p>
+  </header>
+
+  <main class="container">
+    <div class="section-title">공개수업 안내</div>
+
+    <div class="class-list" id="classList"></div>
+
+    <section class="detail-box" id="classDetail">
+      <h2 class="detail-title" id="detailTitle"></h2>
+
+      <table class="info-table">
+        <tr>
+          <th>대상</th>
+          <td id="detailGrade"></td>
+        </tr>
+        <tr>
+          <th>교과</th>
+          <td id="detailSubject"></td>
+        </tr>
+        <tr>
+          <th>수업 교사</th>
+          <td id="detailTeacher"></td>
+        </tr>
+        <tr>
+          <th>장소</th>
+          <td id="detailPlace"></td>
+        </tr>
+        <tr>
+          <th>수업 주제</th>
+          <td id="detailTopic"></td>
+        </tr>
+        <tr>
+          <th>학습 목표</th>
+          <td id="detailGoal"></td>
+        </tr>
+      </table>
+
+      <div class="action-area">
+        <div class="action-box observation" onclick="openObservationForm()">
+          📝 참관록 작성
+        </div>
+
+        <div class="action-box map" onclick="openMap()">
+          🗺️ 수업장소 안내도
+        </div>
+      </div>
+
+      <div class="notice">
+        ※ 참관록 작성 버튼을 누르면 해당 수업이 미리 선택된 구글 설문지가 새 창에서 열립니다.
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="mapModal" onclick="closeMap(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span>수업장소 안내도</span>
+        <button class="close-btn" onclick="closeMap()">×</button>
+      </div>
+
+      <!-- GitHub 저장소에 map.pdf 파일을 index.html과 같은 위치에 업로드하세요. -->
+      <iframe class="pdf-viewer" src="map.pdf"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const classes = [
+      {
+        id: 1,
+        grade: "1학년",
+        subject: "기술",
+        teacher: "김건훈",
+        place: "1-2 교실 (2층)",
+        topic: "마인크래프트 에듀케이션을 활용한 재료의 특성 이해 (마인크래프트 에듀케이션)",
+        goal: "마인크래프트 에듀케이션을 활용하여 재료의 특성을 이해할 수 있다."
+      },
+      {
+        id: 2,
+        grade: "2학년",
+        subject: "수학",
+        teacher: "홍석우",
+        place: "2-1 교실 (3층)",
+        topic: "삼각형의 외심, 내심을 이용한 실생활 문제해결 (네스모스)",
+        goal: "삼각형의 외심과 내심을 이용하여 실생활 문제를 해결할 수 있다."
+      },
+      {
+        id: 3,
+        grade: "2학년",
+        subject: "정보",
+        teacher: "김규호",
+        place: "2-3 교실 (3층)",
+        topic: "생성형 AI를 활용한 생활 속 문제해결 (생성형 AI, VSCode)",
+        goal: "생성형 AI를 활용하여 생활 속 문제를 해결할 수 있다."
+      },
+      {
+        id: 4,
+        grade: "2학년",
+        subject: "특수",
+        teacher: "김소현",
+        place: "통합지원1반 (1층)",
+        topic: "스마트 팜으로 구축하기 (스파이크 프라임, AI 교수학습 플랫폼)",
+        goal: "스마트 팜의 원리를 이해하고 스마트 팜을 구축할 수 있다."
+      },
+      {
+        id: 5,
+        grade: "3학년",
+        subject: "과학",
+        teacher: "양정모",
+        place: "과학실 (2층)",
+        topic: "롤러코스터를 이용한 데이터분석 (웹 실감형 콘텐츠)",
+        goal: "웹 실감형 콘텐츠를 활용하여 데이터를 분석할 수 있다."
+      }
+    ];
+
+    // 각 수업별 '양식 미리 작성' 링크
+    const formLinks = {
+      1: "https://docs.google.com/forms/d/e/1FAIpQLSdH4YlZ7IiLwB5MOm6YDOHpji9gBnTfppRvzuYDR6Qg0QzZoA/viewform?usp=pp_url&entry.929062175=%EA%B8%B0%EC%88%A0",
+      2: "https://docs.google.com/forms/d/e/1FAIpQLSdH4YlZ7IiLwB5MOm6YDOHpji9gBnTfppRvzuYDR6Qg0QzZoA/viewform?usp=pp_url&entry.929062175=%EC%88%98%ED%95%99",
+      3: "https://docs.google.com/forms/d/e/1FAIpQLSdH4YlZ7IiLwB5MOm6YDOHpji9gBnTfppRvzuYDR6Qg0QzZoA/viewform?usp=pp_url&entry.929062175=%EC%A0%95%EB%B3%B4",
+      4: "https://docs.google.com/forms/d/e/1FAIpQLSdH4YlZ7IiLwB5MOm6YDOHpji9gBnTfppRvzuYDR6Qg0QzZoA/viewform?usp=pp_url&entry.929062175=%ED%8A%B9%EC%88%98",
+      5: "https://docs.google.com/forms/d/e/1FAIpQLSdH4YlZ7IiLwB5MOm6YDOHpji9gBnTfppRvzuYDR6Qg0QzZoA/viewform?usp=pp_url&entry.929062175=%EA%B3%BC%ED%95%99"
+    };
+
+    let selectedClass = null;
+
+    const classList = document.getElementById("classList");
+
+    classes.forEach(cls => {
+      const card = document.createElement("div");
+      card.className = "class-card";
+      card.innerHTML = `
+        <div class="class-number">${cls.id}</div>
+        <div class="class-subject">${cls.subject}</div>
+        <div class="class-teacher">${cls.teacher} 선생님</div>
+      `;
+
+      card.addEventListener("click", () => selectClass(cls.id, card));
+      classList.appendChild(card);
+    });
+
+    function selectClass(id, card) {
+      selectedClass = classes.find(cls => cls.id === id);
+
+      document.querySelectorAll(".class-card").forEach(item => {
+        item.classList.remove("active");
+      });
+
+      card.classList.add("active");
+
+      document.getElementById("detailTitle").textContent =
+        `${selectedClass.subject} · ${selectedClass.teacher} 선생님`;
+
+      document.getElementById("detailGrade").textContent = selectedClass.grade;
+      document.getElementById("detailSubject").textContent = selectedClass.subject;
+      document.getElementById("detailTeacher").textContent = selectedClass.teacher;
+      document.getElementById("detailPlace").textContent = selectedClass.place;
+      document.getElementById("detailTopic").textContent = selectedClass.topic;
+      document.getElementById("detailGoal").textContent = selectedClass.goal;
+
+      const detailBox = document.getElementById("classDetail");
+      detailBox.classList.add("show");
+
+      setTimeout(() => {
+        detailBox.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 50);
+    }
+
+    function openObservationForm() {
+      if (!selectedClass) {
+        alert("먼저 참관할 수업을 선택해주세요.");
+        return;
+      }
+
+      const link = formLinks[selectedClass.id];
+
+      if (link) {
+        window.open(link, "_blank");
+      } else {
+        alert("참관록 링크가 설정되지 않았습니다.");
+      }
+    }
+
+    function openMap() {
+      document.getElementById("mapModal").classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMap(event) {
+      if (!event || event.target.id === "mapModal") {
+        document.getElementById("mapModal").classList.remove("show");
+        document.body.style.overflow = "";
+      }
+    }
+
+    // ESC 키로 안내도 닫기
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeMap();
+      }
+    });
+  </script>
+
+</body>
+</html>
