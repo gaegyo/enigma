@@ -150,7 +150,7 @@
     }
 
     .info-table th {
-      width: 120px;
+      width: 130px;
       background: #f5f7fb;
       font-weight: 700;
     }
@@ -272,7 +272,7 @@
       }
 
       .info-table th {
-        width: 88px;
+        width: 110px;
       }
 
       .info-table th,
@@ -318,8 +318,12 @@
           <td id="detailTeacher"></td>
         </tr>
         <tr>
-          <th>장소</th>
+          <th>수업 장소</th>
           <td id="detailPlace"></td>
+        </tr>
+        <tr>
+          <th>수업나눔 장소</th>
+          <td id="detailDiscussionPlace"></td>
         </tr>
         <tr>
           <th>학습 주제</th>
@@ -367,6 +371,7 @@
         subject: "기술",
         teacher: "김건훈",
         place: "1-2 교실 (2층)",
+        discussionPlace: "도서관 (3층)",
         topic: "마인크래프트 에듀케이션을 활용한 재료의 이해",
         goal: "1. 제품 제작에 사용되는 재료의 종류와 특성을 설명할 수 있다.\n2. 마인크래프트 에듀케이션을 활용하여 재료를 가공할 수 있다."
       },
@@ -376,6 +381,7 @@
         subject: "수학",
         teacher: "홍석우",
         place: "2-1 교실 (3층)",
+        discussionPlace: "도서관 (3층)",
         topic: "삼각형의 외심과 내심을 활용한 실생활 문제 해결",
         goal: "삼각형의 외심과 내심의 성질을 활용하여 실생활 문제를 해결할 수 있다."
       },
@@ -385,6 +391,7 @@
         subject: "정보",
         teacher: "김규호",
         place: "AI Cafe (3층)",
+        discussionPlace: "AI Cafe (3층)",
         topic: "인공지능 시스템을 활용한 우리 주변의 문제 해결",
         goal: "나의 생활 속 문제를 발견하고, 생성형 AI를 활용하여 문제를 해결할 수 있는 웹페이지를 만들 수 있다."
       },
@@ -394,6 +401,7 @@
         subject: "특수",
         teacher: "김소현",
         place: "통합지원1반 (1층)",
+        discussionPlace: "통합지원1반 (1층)",
         topic: "스마트 팩토리의 각 모델을 연결하여 자동화 시스템 만들기",
         goal: "스마트 팩토리의 각 모델을 연결해 반복적으로 동작하게 할 수 있다."
       },
@@ -403,6 +411,7 @@
         subject: "과학",
         teacher: "양정모",
         place: "과학실1 (2층)",
+        discussionPlace: "과학실1 (2층)",
         topic: "역학적 에너지 전환과 보존 탐구",
         goal: "1. 높이와 속력 변화에 따른 위치에너지와 운동에너지의 변화를 설명할 수 있다.\n2. 다양한 시뮬레이션을 활용하여 에너지 그래프를 해석하고 역학적 에너지 보존을 설명할 수 있다."
       }
@@ -450,6 +459,7 @@
       document.getElementById("detailSubject").textContent = selectedClass.subject;
       document.getElementById("detailTeacher").textContent = selectedClass.teacher;
       document.getElementById("detailPlace").textContent = selectedClass.place;
+      document.getElementById("detailDiscussionPlace").textContent = selectedClass.discussionPlace;
       document.getElementById("detailTopic").textContent = selectedClass.topic;
       document.getElementById("detailGoal").textContent = selectedClass.goal;
 
